@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "guz",
+  "description": "Artem Zhurbei's plugins for Claude Code.",
+  "owner": {
+    "name": "Artem Zhurbei",
+    "url": "https://github.com/ZhurbeyArtem"
+  },
+  "plugins": [
+    {
+      "name": "guz",
+      "description": "Declares a repo's architecture-and-style contract in a checked-in .guz.yaml.",
+      "source": "./",
+      "category": "development"
+    }
+  ]
+}
