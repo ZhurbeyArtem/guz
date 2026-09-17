@@ -23,16 +23,10 @@ test file is invisible and is silently dropped.
 
 ## Grill your own plan before you write
 
-Invoke the `grilling` skill if it is available. It is written for interviewing a user and
-you have none, so you answer your own frontier. The method, if the skill is not there:
-
-Map the fix as a design tree — every decision branches into the decisions hanging off it.
-The frontier is every decision whose prerequisites are already settled. Work it in rounds:
-state each question, answer it with your recommendation and your reason, then recompute.
-You are done when the frontier is empty and nothing is silently assumed.
-
-**Never wait for an answer.** You are the only one in the room; a question you leave open
-is a question you failed to decide.
+Invoke the `guz-grill` skill. It ships in this plugin, so it is always there, and its
+"When there is no user" section is written for exactly your case: you answer your own
+frontier and never wait on anyone. A question you leave open is a decision you failed to
+take.
 
 Frontier questions worth expecting: is this finding a symptom of something one level up;
 does fixing it change behaviour or only shape; what currently pins this behaviour; does

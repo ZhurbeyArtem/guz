@@ -122,3 +122,19 @@ to type.
 Unmeasured, and the first thing a real run should settle: whether two variants per file
 are worth double the tokens, or whether the second agent mostly reproduces the first.
 Nothing here is designed to find that out.
+
+## 2026-09-17 — vendoring the grilling method
+
+Decision 47 is reversed here, in the same day it was written, by a follow-up request.
+
+| # | Decision | Why | Rejected |
+| - | -------- | --- | -------- |
+| 51 | `grilling` and `domain-modeling` are copied into the plugin as `guz-grill` and `guz-grill-with-docs`, not invoked from `~/.claude/skills/`. Reverses 47. | 47 settled for "invoke it if present" because the upstream skills ship with nothing and exist on one machine. Upstream is MIT; 130 lines of vendored text is cheaper than a runtime dependency that is absent everywhere else. | Wrappers calling the personal skills, which fail exactly the same way; keeping 47's "if available" hedge. |
+| 52 | `grill-me` collapses into `guz-grill` rather than becoming a fourth file. | Upstream splits them because `grilling` is auto-invokable and `grill-me` is the manual door into it. Inside one plugin a one-line wrapper around a sibling has no reason to exist. | Mirroring upstream's four files. |
+| 53 | `guz-grill` drops `disable-model-invocation`; `guz-grill-with-docs` keeps it. | `guz-fixer` has to be able to invoke the first, which was the entire point. The second writes `CONTEXT.md` and ADRs into the repo, and that is not something a model starts on its own. | The flag on both, which is upstream's shape and leaves 47 where it was. |
+| 54 | The "no user to answer" case lives in `guz-grill` as its own section; `guz-fixer` no longer restates the method. | The agent carried a four-line paraphrase of a text now sitting two directories away. Two copies of one method drift, and the paraphrase is the one that loses. | The paraphrase; a separate agent-only copy of the method. |
+| 55 | Each copied file carries a provenance line, and the full MIT notice lives in `LICENSES.md` at the root. | MIT requires the notice to travel with substantial portions. A credit line is attribution, not the notice. | A credit line alone; a `LICENSE` file inside each skill directory. |
+
+The cost, accepted: ~130 lines of someone else's text now live here and no longer track
+upstream. If the method changes in `mattpocock/skills`, nothing in this repo notices. The
+provenance lines are the only thread back.

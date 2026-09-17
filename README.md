@@ -99,6 +99,24 @@ move the scores.
 /guz:guz-fix orders
 ```
 
+### `/guz:guz-grill` and `/guz:guz-grill-with-docs`
+
+The interview every block in `context/decisions.md` was settled with, vendored so it
+ships with the plugin instead of living on one machine.
+
+`guz-grill` maps a plan as a design tree and works the frontier in rounds: every question
+whose prerequisites are already settled, each with a recommended answer, then the next
+round once your answers push the frontier outward. `guz-fixer` invokes it against itself —
+the `When there is no user` section is what lets an agent answer its own frontier instead
+of waiting for a reply that is never coming.
+
+`guz-grill-with-docs` runs the same interview and writes the result down as it goes:
+`CONTEXT.md` for the vocabulary, `docs/adr/` for the decisions that were hard to reverse,
+surprising, and a real trade-off. User-invoked only — it writes to the repo.
+
+Both are copied from [mattpocock/skills](https://github.com/mattpocock/skills) under MIT.
+See [LICENSES.md](LICENSES.md).
+
 ## Two numbers, not one
 
 `priority` is declared — how much this repo cares. `score` is measured — how well the
