@@ -31,8 +31,22 @@ datastore no dependency mentions.
 
 ## 3. Detect `modules`
 
-Top-level directories under `src/`. If there is no `src/`, top-level directories of the
-repo, excluding `node_modules`, `dist`, `build`, `.git`, `.claude`, and dotfiles.
+Two passes:
+
+- top-level directories under `src/` — or, when there is no `src/`, top-level
+  directories of the repo, excluding `node_modules`, `dist`, `build`, `.git`,
+  `.claude`, and dotfiles;
+- then, recursively and at any depth below those, every directory holding the stack's
+  module-marker file. In NestJS that file is `*.module.ts`; in another stack it is
+  whatever plays the same role — translate the intent, not the filename.
+
+A module's name is its path from `src/`: `referrals`, `referrals/rewards`,
+`referrals/rewards/operations`. Bare directory names are not usable — one repo here has
+twelve modules called `operations`.
+
+The marker is what makes a nested directory a module; a top-level directory is one
+whether or not it has a marker. `common/` and `config/` usually hold the code most worth
+auditing.
 
 Workspace packages are NOT used as modules. A monorepo gets the same treatment as
 anything else, and the user fixes the list by hand if it is wrong.
@@ -91,8 +105,9 @@ stack: [typescript, nestjs, postgres, redis]
 thresholds: { green: 8, yellow: 5 }
 overall: null
 modules:
-  - { name: orders,  score: null }
-  - { name: billing, score: null }
+  - { name: orders,            score: null }
+  - { name: orders/settlement, score: null }
+  - { name: billing,           score: null }
 patterns:
   - { name: Clean Architecture, priority: 10, score: null }
   - { name: Repository Pattern, priority: 7,  score: null }

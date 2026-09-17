@@ -61,3 +61,37 @@ to a shared location would break `guz-init` for the sake of symmetry.
 
 Still nothing enforces the contract: no hook, no CI gate. `@.guz.yaml` in `CLAUDE.md`
 and a human reading the report remain the entire consumer side.
+
+## 2026-09-17 — findings report and nested modules
+
+Settled in one grilling session before any file was written, same as the two blocks
+above. Decisions 7, 18 and 20 are each partially reversed here — see 37, 33 and 36.
+
+| # | Decision | Why | Rejected |
+| - | -------- | --- | -------- |
+| 30 | The audit writes two artifacts: the dated report, unchanged, and one findings file per module holding everything found. | The three-example cap exists to protect the orchestrator's context, not to limit what gets recorded. | Raising the cap inside the report; one combined findings file for the repo. |
+| 31 | The auditor agent writes its own findings file; only score, three examples and `count` return through the orchestrator. | Six grep hooks alone return ~1600 hits on a 3,200-file NestJS service. A full payload per module does not survive 120 modules in one run. | The agent returning everything and the skill writing the files. |
+| 32 | Findings are grouped by source file, with the rule as a tag on each line. | The reader is a subagent fixing one file; per-rule grouping makes it invert the index or open the same file thirty times. The per-rule view already exists in the report. | Grouping by rule; carrying both views. |
+| 33 | Each file splits into `Verified` and `Unverified hits` — partially reversing 18, which admitted no unverified evidence at all. | Reading all 466 `any` hits is a second audit costing more than the first; calling unread greps "problems" is the confident noise 18 exists to prevent. The split is also the fixer's queue boundary. | Verifying everything; publishing raw hits unlabelled; keeping only `count`. |
+| 34 | A finding carries its enclosing symbol, not just `file:line`. | The fixer works in batches, and the first fix moves every line number below it. | Line numbers alone; hash IDs per finding. |
+| 35 | No per-finding field saying how to check the fix. | It is derivable from the rule name and the rule's `.guz.yaml` comment — a format field for a skill that does not exist yet is decision 8 again. | A `test` / `suite` / `tsc+lint` column written by the auditor. |
+| 36 | Findings live at `docs/guz-audit/findings/YYYY-MM-DD/<module>.md`, committed. Partial audits inherit with `cp -rn` after the agents write. | A sibling `*.md` breaks 20's "newest audit is the largest filename"; a separate directory leaves it literally true. Committed, so the report's links resolve for everyone, not just whoever ran it. `-n` leaves today's fresh files alone. | `YYYY-MM-DD.full.md`; a date directory holding both artifacts; gitignoring findings, which was chosen and then reversed once the links were considered. |
+| 37 | Modules are detected recursively: every top-level directory under `src/`, plus any directory at any depth holding the stack's module-marker file. Names are paths. Partially reverses 7. | The service measured here has 26 nested modules, two of them two levels deep, whose code was silently scored as their parent's. | Top-level only; a single level of nesting; bare directory names, which collide twelve ways on `operations`. |
+| 38 | A parent's perimeter stops where a nested module begins. | 19 weights repo-wide rule scores by module size; a file counted in both parent and child votes twice. | Counting nested code in the parent as well; dropping the parent once it has children. |
+| 39 | `/guz:guz-audit referrals` audits that module and its whole subtree. | Whoever changed `referrals` changed `referrals/rewards`. Exact match leaves stale rows looking freshly measured. | Exact match; asking the user each time. |
+| 40 | The marker is required only for nesting — a top-level directory is a module with or without one. | `common/` and `config/` carry no marker and usually hold the code most worth auditing. | Requiring a marker everywhere. |
+| 41 | `guz-init` gets the same detection. | Step 2 says modules are detected "exactly as `guz-init` detects them". Diverging means every audit opens with "add 26 modules?" and the answer is always yes. | Changing audit only and letting the first audit correct the contract. |
+
+Measured on a 3,200-file NestJS service during the session, and the basis for 31, 33 and 37: 94
+top-level directories under `src/`, 90 of them with a `*.module.ts`; 26 nested modules,
+24 at depth 3 and 2 at depth 4; and six grep hooks returning 466 `any`, 455 mutations,
+603 `console.`, 48 `process.env` and 23 hand-built collaborators.
+
+The consumer these findings are shaped for does not exist yet: a fix skill dispatching
+subagents to work the `Verified` queue test-first, with TDD applied where the file
+executes code and `tsc`/lint standing in where it does not. Nothing here waits on it —
+the findings file reads on its own — but 32, 33 and 34 are its requirements, not the
+report's.
+
+Knowingly accepted: on a repo of that size this commits ~120 files per audit
+under `docs/`.

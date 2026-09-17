@@ -29,6 +29,11 @@ own, or both — and sorts them into priority buckets.
 Refuses to run if `.guz.yaml` already exists. Offers to add an `@.guz.yaml` line to the
 repo's `CLAUDE.md`, which is what makes the contract load into every session.
 
+A module is a top-level directory under `src/`, plus any directory nested below one that
+holds the stack's module-marker file — `*.module.ts` in NestJS. Nested modules are named
+by path, and a parent's perimeter stops where a nested module begins, so no file is
+counted twice.
+
 ```yaml
 # .guz.yaml — architecture & style contract for this repo. Checked in.
 repo: example-service
@@ -36,8 +41,9 @@ stack: [typescript, nestjs, postgres, redis]
 thresholds: { green: 8, yellow: 5 }
 overall: null
 modules:
-  - { name: orders,  score: null }
-  - { name: billing, score: null }
+  - { name: orders,            score: null }
+  - { name: orders/settlement, score: null }
+  - { name: billing,           score: null }
 patterns:
   - { name: Clean Architecture, priority: 10, score: null }
   - { name: Repository Pattern, priority: 7,  score: null }
@@ -48,18 +54,24 @@ style:
 
 ### `/guz:guz-audit`
 
-Fills in every `score` and `overall`. One read-only auditor agent per module, in batches
-of six — each greps for mechanical hooks before it judges, and none may lower a score
-without citing a `file.ts:42`. A rule that cannot apply to a module comes back `n/a`,
-not 10.
+Fills in every `score` and `overall`. One auditor agent per module, in batches of six —
+each greps for mechanical hooks before it judges, and none may lower a score without
+citing a `file.ts:42`. A rule that cannot apply to a module comes back `n/a`, not 10.
 
 A module's score is the priority-weighted average of its rules; a repo-wide rule score
 is the size-weighted average across modules. `overall` stays a judgement, capped by the
 worst `priority: 10` rule.
 
-Evidence goes to `docs/guz-audit/YYYY-MM-DD.md`, which also carries the per-rule matrix
-— that is what lets `/guz:guz-audit orders` re-audit one module and still
-recompute the totals. `.guz.yaml` keeps only numbers.
+Evidence goes to two places. `docs/guz-audit/YYYY-MM-DD.md` carries the per-rule matrix
+and up to three examples per rule — that matrix is what lets `/guz:guz-audit referrals`
+re-audit one module with everything nested under it and still recompute the totals.
+`.guz.yaml` keeps only numbers.
+
+The complete list goes to `docs/guz-audit/findings/YYYY-MM-DD/<module>.md`, one file per
+module, written by that module's auditor and linked from its section in the report.
+Findings are grouped by source file rather than by rule, and split into what the auditor
+read and confirmed against what its greps merely turned up — so the file reads as a work
+queue for whoever fixes it, not a wall of unverified hits.
 
 ## Two numbers, not one
 
