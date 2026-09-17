@@ -1,7 +1,7 @@
 {
   "name": "guz",
-  "version": "0.3.0",
-  "description": "Declares and tracks a repo's architecture-and-style contract in a checked-in .guz.yaml: chosen patterns and style rules with declared priority, modules, and scores filled in later by audit.",
+  "version": "0.4.0",
+  "description": "Declares and tracks a repo's architecture-and-style contract in a checked-in .guz.yaml: chosen patterns and style rules with declared priority, modules, and scores filled in later by audit, then works the findings the audit leaves behind.",
   "author": {
     "name": "Artem Zhurbei",
     "url": "https://github.com/ZhurbeyArtem"
