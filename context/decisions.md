@@ -95,3 +95,30 @@ report's.
 
 Knowingly accepted: on a repo of that size this commits ~120 files per audit
 under `docs/`.
+
+## 2026-09-17 — design of `guz-fix`
+
+Settled in one grilling round before any file was written, same as the blocks above.
+Nothing here is reversed; 32, 33, 34 and 35 are consumed exactly as they were written.
+The previous block ends by predicting this skill — this is it.
+
+| # | Decision | Why | Rejected |
+| - | -------- | --- | -------- |
+| 42 | The unit of work is one source file with all its `Verified` findings, not one finding. | 32 grouped findings by file for this reader. Two fixes in one file collide, and 34 exists because the first edit moves every line number below it. | One agent per finding; one agent per module. |
+| 43 | Only `Verified` findings enter the queue. `Unverified hits` are counted, shown, and never worked. | 33 drew that split as the fixer's queue boundary. Fixing an unread grep hit is the confident noise 2 exists to prevent. | Working both lists; re-verifying the hits first, which is a second audit. |
+| 44 | Two agents per file, byte-identical brief, neither told the other exists. | An agent that knows it is being compared differentiates on purpose, and two artificially divergent diffs are worse than two honest ones. | One agent; two agents given deliberately different strategies; more than two. |
+| 45 | Each agent gets a real git worktree and returns a real `git diff`, verified by a real command. | A hand-written patch does not apply, and neither variant would have met a compiler. "Variant A is better" would be guessing. | Agents proposing patches as text; agents taking turns in the main working tree. |
+| 46 | `guz-fixer` declares no `model:`, same as `guz-module-auditor`. | 29, unchanged: it inherits whatever the session runs. | `subagent_type: fork` — the only documented guarantee of the session's *effort* level, but it carries the whole conversation into every agent, twice per file. |
+| 47 | The agents grill themselves: `grilling`'s design-tree method with no user to answer, invoked as a skill when present and restated inline when not. | Identical brief plus identical model yields two near-identical diffs and nothing to choose between. The tree is where the divergence comes from and the first thing the reader compares. | `grill-with-docs`, whose `domain-modeling` half would fill `docs/` with competing ADRs about one-line fixes; hard-depending on `grill-me`, a one-line wrapper that lives in `~/.claude/skills/`, ships with no plugin, and is `disable-model-invocation` anyway. |
+| 48 | What verification means is decided per finding by the agent: test-first where the fix changes behaviour, type-checker plus linter plus existing tests where it only changes shape. | This is where 35's "derivable from the rule" gets derived. A rule that only removes an `any` has nothing to test. | A fixed command for every fix; TDD on every finding; the `test:` column 35 rejected. |
+| 49 | Files are worked in sequence. Only the pair inside one file runs in parallel. | Two fixes landing in one module collide over shared imports and helpers. | All chosen files at once. |
+| 50 | Nothing is committed and `.guz.yaml` is not touched. | This runs in someone else's repository, and a score written before the diff is read is a lie about code that may yet be reverted. | A commit per applied fix; rescoring the module in place. |
+
+The three-skill loop is closed — `guz-init` declares, `guz-audit` measures, `guz-fix`
+works the queue — and the enforcement gap 12 and 29 left open is still open. Nothing
+re-scores after a fix run; `/guz:guz-audit <module>` remains a thing the user remembers
+to type.
+
+Unmeasured, and the first thing a real run should settle: whether two variants per file
+are worth double the tokens, or whether the second agent mostly reproduces the first.
+Nothing here is designed to find that out.

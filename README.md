@@ -73,6 +73,32 @@ Findings are grouped by source file rather than by rule, and split into what the
 read and confirmed against what its greps merely turned up — so the file reads as a work
 queue for whoever fixes it, not a wall of unverified hits.
 
+### `/guz:guz-fix`
+
+Works the queue the audit left behind. Reads the newest `docs/guz-audit/YYYY-MM-DD.md`,
+follows the `All findings:` link out of the named module's section — and out of every
+module nested under it — then lists the files carrying `Verified` findings. Unverified
+hits stay out: clearing them means reading them, which is a second audit.
+
+The unit is a file, not a finding. That is what findings are grouped by file for — two
+fixes in one file collide, and the first one moves every line number below it.
+
+Each chosen file goes to two `guz-fixer` agents at once, each in its own git worktree,
+both handed a byte-identical brief and neither told the other exists. Each grills its own
+plan into a design tree before it writes, fixes test-first where behaviour changes and
+leans on the type-checker and the linter where only shape does, and returns its reasoning,
+its diff, and the real output of the check it ran.
+
+You pick one. Its diff is applied to the working tree uncommitted, both worktrees are
+removed, and the next file starts — files are worked in sequence, never in parallel.
+
+Nothing is committed and `.guz.yaml` is not touched. Re-run `/guz:guz-audit <module>` to
+move the scores.
+
+```
+/guz:guz-fix orders
+```
+
 ## Two numbers, not one
 
 `priority` is declared — how much this repo cares. `score` is measured — how well the
