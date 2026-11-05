@@ -47,3 +47,15 @@ repo. They reach it only through this file, reviewed here.
   harness (env, global setup, fixtures helpers, jest config)
 - **Lands in:** catalog.md → Code style; guz-audit heuristic: a `*spec.ts` outside a `tests/` directory
 - **Status:** open
+
+## 2026-11-05 — Await into a named const before using the result
+
+- **Seen:** analyzer 2026-11-05 (e36af66)
+- **Claude wrote:** `for (const row of await this.repository.findByExternalRefs(...)) { ... }`, and the same habit as
+  `(await f()).x`, `list.push(await f())` and `g(await f())`
+- **Artem wants:** first a const that fetches the data, then the code that uses it
+- **Rule:** every awaited result goes into a named const before anything iterates, reads or passes it on;
+  `expect(await f())` in a test is fine
+- **Lands in:** catalog.md → Code style; guz-audit heuristic: `of await `, `(await ` followed by `.` or `?.`,
+  `(await ` as a call argument other than `expect(`
+- **Status:** open
