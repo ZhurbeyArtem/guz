@@ -59,3 +59,13 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style; guz-audit heuristic: `of await `, `(await ` followed by `.` or `?.`,
   `(await ` as a call argument other than `expect(`
 - **Status:** open
+
+## 2026-11-05 — Blank line before and after every if and for
+
+- **Seen:** analyzer 2026-11-05 (828035b)
+- **Claude wrote:** `if` and `for` blocks glued to the statements around them
+- **Artem wants:** one empty line before and after every `if` and `for`, so the code reads easier
+- **Rule:** one blank line around each `if` and `for` statement, except where it opens or closes its block
+- **Lands in:** catalog.md → Code style, shipped with the eslint snippet
+  (`padding-line-between-statements`: `prev: '*', next: ['if', 'for']` and the reverse) so it is enforced, not audited
+- **Status:** open
