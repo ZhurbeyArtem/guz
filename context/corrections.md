@@ -96,3 +96,15 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style with the eslint snippet
   (`@typescript-eslint/promise-function-async`, `checkArrowFunctions: false`), enforced rather than audited
 - **Status:** open
+
+## 2026-11-05 — A loop iterates a named const; no multi-line callback inside an argument list
+
+- **Seen:** analyzer 2026-11-05 (5099722)
+- **Claude wrote:** `for await (const page of this.pages(options, (after) => { ...25 lines building a query... })) {`
+- **Artem wants:** no arrow function inside the arguments; first get the pages, then walk them
+- **Rule:** the call that produces what a loop walks goes into a const above the loop; a callback longer than one
+  line gets a name (a private method, or a const) instead of sitting inline in an argument list. One-line
+  accessors such as `(row) => row.id` stay inline. Related to the await-into-a-const entry above
+- **Lands in:** catalog.md → Code style; guz-audit heuristic: `for (` or `for await (` whose header contains
+  `=>` or `function`, and an argument list holding an arrow whose body spans more than one line
+- **Status:** open
