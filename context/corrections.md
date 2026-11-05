@@ -83,3 +83,16 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style; guz-audit heuristic: a public method in `*.repository.ts` whose body is
   not one try statement; eslint `@typescript-eslint/return-await` (in strictTypeChecked) guards the `return await`
 - **Status:** open
+
+## 2026-11-05 — async on every method that returns a Promise
+
+- **Seen:** analyzer 2026-11-05 (6eb16d9)
+- **Claude wrote:** `create(input): Promise<SourceRow> { if (blank) throw ...; return this.repository.insert(input); }`
+  without `async`, so the validation error was thrown synchronously instead of rejecting; tests missed it because
+  their `errorOf` helper caught both
+- **Artem wants:** such a method marked `async`
+- **Rule:** every method or function that returns a Promise is `async`; a test of a rejection awaits
+  `expect(promise).rejects` so a synchronous throw fails it
+- **Lands in:** catalog.md → Code style with the eslint snippet
+  (`@typescript-eslint/promise-function-async`, `checkArrowFunctions: false`), enforced rather than audited
+- **Status:** open
