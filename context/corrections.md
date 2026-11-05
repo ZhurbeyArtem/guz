@@ -109,3 +109,12 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style; guz-audit heuristic: `for (` or `for await (` whose header contains
   `=>` or `function`, and an argument list holding an arrow whose body spans more than one line
 - **Status:** open
+
+## 2026-11-05 — Split independent work across parallel subagents, each in its own worktree
+
+- **Seen:** analyzer 2026-11-05 (process, no commit)
+- **Claude wrote:** Phase 3 work done inline in the main session, one piece at a time, with no superpowers skills loaded and no UI design skill for UI work
+- **Artem wants:** use superpowers and ui-ux-pro-max where they fit, and do the work through subagents; when five agents can safely run at once, run five, and run more or fewer when that is the safe number
+- **Rule:** split work into genuinely independent parts and dispatch them to subagents in parallel, each in its own git worktree with its own test database; load the relevant superpowers skills (test-driven-development, verification-before-completion, dispatching-parallel-agents) and ui-ux-pro-max for UI design; the main session coordinates, reviews and integrates
+- **Lands in:** a skill text (writing-for-agents or guz-init default for process rules); not a catalog.md code-style entry
+- **Status:** open
