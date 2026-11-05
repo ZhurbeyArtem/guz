@@ -100,6 +100,7 @@ repo. They reach it only through this file, reviewed here.
 ## 2026-11-05 — A loop iterates a named const; no multi-line callback inside an argument list
 
 - **Seen:** analyzer 2026-11-05 (5099722)
+- **Seen:** analyzer 2026-11-05 (d51982d): the same rule applied to calls in a loop header, which the first pass missed
 - **Claude wrote:** `for await (const page of this.pages(options, (after) => { ...25 lines building a query... })) {`
 - **Artem wants:** no arrow function inside the arguments; first get the pages, then walk them
 - **Rule:** the call that produces what a loop walks goes into a const above the loop; a callback longer than one
