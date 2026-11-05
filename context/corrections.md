@@ -69,3 +69,17 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style, shipped with the eslint snippet
   (`padding-line-between-statements`: `prev: '*', next: ['if', 'for']` and the reverse) so it is enforced, not audited
 - **Status:** open
+
+## 2026-11-05 — try/catch in every repository method
+
+- **Seen:** analyzer 2026-11-05 (a510f56)
+- **Claude wrote:** repository methods with no try/catch, so a driver error reached the global filter as a bare
+  INTERNAL; only the few methods mapping a duplicate or a missing parent had one
+- **Artem wants:** a try/catch on every repository method that queries the database
+- **Rule:** each public repository method catches, lets its own domain error through, and rethrows anything else as
+  one catalogue code (`DATABASE_ERROR`) naming `<Class>.<method>` with the driver error as `cause`; the 5xx is
+  logged with that cause. A method that returns a query promise must `return await` it, or the catch never runs.
+  A method that runs caller code (a callback) passes the caller's errors through unchanged
+- **Lands in:** catalog.md → Code style; guz-audit heuristic: a public method in `*.repository.ts` whose body is
+  not one try statement; eslint `@typescript-eslint/return-await` (in strictTypeChecked) guards the `return await`
+- **Status:** open
