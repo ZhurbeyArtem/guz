@@ -131,3 +131,17 @@ repo. They reach it only through this file, reviewed here.
   (scope beyond objects still to confirm with Artem)
 - **Lands in:** catalog.md → Code style with the eslint snippet, enforced rather than audited
 - **Status:** open
+
+## 2026-11-06 — Every exported interface lives in interface/, one file each
+
+- **Seen:** analyzer 2026-11-06 (src/cli/helpers/prompter.ts `Prompter`, src/cli/create-admin.ts `CreateAdminIo`)
+- **Claude wrote:** exported interfaces declared beside the code that uses them (helpers, controllers, repositories,
+  CLI scripts), and several related interfaces sharing one file in `interface/`
+- **Artem wants:** an interface that a file exports goes into the module's `interface/` folder, in a file of its own
+- **Rule:** an exported interface or type alias sits alone in `<module>/interface/<kebab-name>.ts`; a file outside
+  `interface/` may declare only unexported ones. The folder half was already in `.guz.yaml` (Module folder layout);
+  the one-per-file half is new. Enforceable with eslint `no-restricted-syntax` on
+  `ExportNamedDeclaration > TSInterfaceDeclaration` outside `**/interface/**`
+- **Lands in:** catalog.md → Code style (folder layout), plus a guz-audit heuristic for files in `interface/` that
+  export more than one declaration
+- **Status:** open
