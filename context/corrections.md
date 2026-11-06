@@ -145,3 +145,17 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style (folder layout), plus a guz-audit heuristic for files in `interface/` that
   export more than one declaration
 - **Status:** open
+
+## 2026-11-06 — A file holds one kind of thing: module, functions and interfaces apart
+
+- **Seen:** analyzer 2026-11-06 (src/cli/create-admin.ts: `CreateAdminModule`, `CreateAdminIo`, `runCreateAdmin` and
+  `main` in one file)
+- **Claude wrote:** CLI scripts that declare a Nest module, an exported interface, the exported work function and
+  `main` side by side in one file
+- **Artem wants:** split it: the module in its own file, the functions apart, the interface in `interface/`
+- **Rule:** a Nest `@Module` class gets its own `<name>.module.ts`; each other class its own file; exported
+  functions go to `helpers/`; an entry-point script keeps only `main` and its self-invocation. Related to the
+  one-interface-per-file entry above
+- **Lands in:** catalog.md → Code style (folder layout); guz-audit heuristic: a file that declares a `@Module` class
+  together with an exported function or another class
+- **Status:** open
