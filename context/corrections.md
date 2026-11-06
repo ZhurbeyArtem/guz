@@ -118,3 +118,16 @@ repo. They reach it only through this file, reviewed here.
 - **Rule:** split work into genuinely independent parts and dispatch them to subagents in parallel, each in its own git worktree with its own test database; load the relevant superpowers skills (test-driven-development, verification-before-completion, dispatching-parallel-agents) and ui-ux-pro-max for UI design; the main session coordinates, reviews and integrates
 - **Lands in:** a skill text (writing-for-agents or guz-init default for process rules); not a catalog.md code-style entry
 - **Status:** open
+
+## 2026-11-06 — Check a nullable object with `!x`, not `x === undefined`
+
+- **Seen:** analyzer 2026-11-06 (src/auth/auth.decorators.ts, `if (user === undefined)`)
+- **Claude wrote:** explicit comparisons such as `if (user === undefined)` and `if (row === null)` on values that
+  can only be an object or nothing
+- **Artem wants:** the shorter `if (!user)`
+- **Rule:** a value typed object | null | undefined is checked with `!x` / `x`; a nullable string, number or
+  boolean keeps the explicit `=== null` / `=== undefined`, because `!x` also treats `''`, `0` and `false` as
+  missing. Enforced by `@typescript-eslint/strict-boolean-expressions` with only `allowNullableObject` on
+  (scope beyond objects still to confirm with Artem)
+- **Lands in:** catalog.md → Code style with the eslint snippet, enforced rather than audited
+- **Status:** open
