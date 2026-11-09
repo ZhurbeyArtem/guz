@@ -1,6 +1,6 @@
 {
   "name": "guz",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Declares and tracks a repo's architecture-and-style contract in a checked-in .guz.yaml: chosen patterns and style rules with declared priority, modules, and scores filled in later by audit, then works the findings the audit leaves behind.",
   "author": {
     "name": "Artem Zhurbei",
@@ -11,5 +11,12 @@
     "code-style",
     "contract",
     "conventions"
-  ]
+  ],
+  "userConfig": {
+    "review_before_commit": {
+      "type": "boolean",
+      "title": "Wait for your review before each commit",
+      "description": "When on, Claude stops after each finished module, asks you to review the code, and commits only after you say so. When off, Claude commits on its own as before."
+    }
+  }
 }

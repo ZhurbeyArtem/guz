@@ -18,6 +18,15 @@ Or from a local checkout, for development:
 /plugin install guz@guz
 ```
 
+Install asks one question, **Wait for your review before each commit** (`review_before_commit`):
+
+- **On:** Claude stops after each finished module, runs the checks, and asks you to review the code. It commits
+  only after you say so, then moves on to the next module. Subagent work waits for the same review.
+- **Off**, or left unanswered: nothing changes, and Claude commits on its own as before.
+
+A `SessionStart` hook (`hooks/review-gate.sh`) adds the rule to every session, including after `/clear` and
+compaction. To change the answer later, run `/plugin configure guz@guz`, then start a new session.
+
 ## Skills
 
 ### `/guz:guz-init`
