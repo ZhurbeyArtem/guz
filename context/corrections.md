@@ -171,3 +171,15 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style; guz-audit heuristic: a top-level const whose template literal starts with
   SELECT/WITH/INSERT/UPDATE/DELETE and has exactly one reference
 - **Status:** open
+
+## 2026-11-09 — A finished module waits for Artem's review before it is committed
+
+- **Seen:** analyzer 2026-11-09 (process; replaces "commit on your own" for module work)
+- **Claude wrote:** committed each module as soon as its checks passed, then moved on to the next one
+- **Artem wants:** after a module is written, leave it uncommitted and ask him to review the code. Commit only once
+  he says it can be committed, and only then go on to the next module
+- **Rule:** finishing a module ends with the checks run and a review request, not a commit. The commit waits for an
+  explicit OK; the next module starts after that commit. Applies to work integrated from subagents too: their
+  changes land in the working tree uncommitted for the same review
+- **Lands in:** workflow / process rules (guz skills that write code end their unit of work with a review gate)
+- **Status:** open
