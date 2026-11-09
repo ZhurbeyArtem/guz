@@ -159,3 +159,15 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style (folder layout); guz-audit heuristic: a file that declares a `@Module` class
   together with an exported function or another class
 - **Status:** open
+
+## 2026-11-09 — Raw SQL used once stays inline, not in a constant
+
+- **Seen:** analyzer 2026-11-09 (src/exceptions/exceptions.repository.ts `const UNION = \`…\``)
+- **Claude wrote:** a module-level `const UNION` holding a multi-line SQL union, referenced from a single
+  `db.raw(\`(${UNION}) AS u\`)` call
+- **Artem wants:** no constant for SQL that is used once; write it inline at the call site
+- **Rule:** raw SQL used in one place goes straight into its `db.raw` / `*Raw` call. This applies only to raw SQL:
+  other single-use literals still follow "No magic numbers". SQL shared by two or more calls may stay a constant
+- **Lands in:** catalog.md → Code style; guz-audit heuristic: a top-level const whose template literal starts with
+  SELECT/WITH/INSERT/UPDATE/DELETE and has exactly one reference
+- **Status:** open
