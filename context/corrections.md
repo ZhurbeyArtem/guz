@@ -182,4 +182,4 @@ repo. They reach it only through this file, reviewed here.
   explicit OK; the next module starts after that commit. Applies to work integrated from subagents too: their
   changes land in the working tree uncommitted for the same review
 - **Lands in:** workflow / process rules (guz skills that write code end their unit of work with a review gate)
-- **Status:** open
+- **Status:** promoted (a9a76b4, guz feat/review-gate: opt-in `review_before_commit` option and SessionStart hook)
