@@ -183,3 +183,16 @@ repo. They reach it only through this file, reviewed here.
   changes land in the working tree uncommitted for the same review
 - **Lands in:** workflow / process rules (guz skills that write code end their unit of work with a review gate)
 - **Status:** promoted (a9a76b4, guz feat/review-gate: opt-in `review_before_commit` option and SessionStart hook)
+
+## 2026-11-09 — HTTP calls go through axios, not fetch
+
+- **Seen:** analyzer 2026-11-09 (src/vakotrade-ledger/vakotrade-ledger.client.ts, src/fireblocks/fireblocks.client.ts,
+  src/common/metrics/metrics.client.ts, src/auth/turnstile.verifier.ts)
+- **Claude wrote:** outbound HTTP with the global `fetch`, `AbortSignal.timeout` and `response.json()`, and specs that
+  mock it with `jest.spyOn(global, 'fetch')`
+- **Artem wants:** axios instead of fetch
+- **Rule:** backend HTTP clients call axios (the version `margin_trading_service` uses), with `timeout` instead of an
+  abort signal; specs mock axios rather than `global.fetch`. The web keeps RTK Query's base query unless asked
+- **Lands in:** catalog.md → Code style; guz-audit heuristic: a `fetch(` call or `jest.spyOn(global, 'fetch')` in a
+  NestJS repo
+- **Status:** open
