@@ -11,5 +11,12 @@
     "code-style",
     "contract",
     "conventions"
-  ]
+  ],
+  "userConfig": {
+    "review_before_commit": {
+      "type": "boolean",
+      "title": "Wait for your review before each commit",
+      "description": "When on, Claude stops after each finished module, asks you to review the code, and commits only after you say so. When off, Claude commits on its own as before."
+    }
+  }
 }
