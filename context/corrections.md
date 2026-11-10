@@ -196,3 +196,15 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style; guz-audit heuristic: a `fetch(` call or `jest.spyOn(global, 'fetch')` in a
   NestJS repo
 - **Status:** open
+
+## 2026-11-10 — A class's helpers are its private methods
+
+- **Seen:** analyzer 2026-11-10 (src/imports/imports.service.ts `walletOf`, `withoutUnmappedTrades`)
+- **Claude wrote:** non-exported module-level functions below `ImportsService`, called only from the class, while
+  other helpers of the same class (`toEvent`, `parserOf`) were already private methods
+- **Artem wants:** those functions as private methods of the class
+- **Rule:** a helper that only one class calls is a private method of that class, not a top-level function in its
+  file; a function shared beyond the class goes to `helpers/`
+- **Lands in:** catalog.md → Code style; guz-audit heuristic: a non-exported top-level `function` in a file that
+  declares a class
+- **Status:** open
