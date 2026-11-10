@@ -217,11 +217,14 @@ repo. They reach it only through this file, reviewed here.
   `likePattern` used twice: Artem wanted all three inlined, so a one-liner used in two places stays inline too)
 - **Seen:** analyzer 2026-11-10 (src/trader-vaults/trader-vaults.service.ts `const SYSTEM_ACTOR = null`, used in
   two places: no constant for a value used in only two places)
+- **Seen:** analyzer 2026-11-10 (src/vakotrade-ledger/vakotrade-ledger.client.ts `SIGN_IN`, `ACCOUNT_TRANSACTIONS`,
+  `DEPOSIT_ADDRESSES`: multi-line GraphQL documents, each used once, go inline at the call too, as raw SQL does)
 - **Claude wrote:** a private method whose body is one boolean expression, called from a single place in `settle`
 - **Artem wants:** no private method for it
 - **Rule:** a one-line expression or a plain value is written where it is used, even when two call sites repeat it;
   no private method, helper or module-level constant just to name it. A named const inside the function is fine when
-  the name helps. Extraction is for logic longer than one line. "No magic numbers" still covers numeric literals
+  the name helps. Extraction is for logic longer than one line. A query text (SQL, GraphQL) used once is inline at
+  its call however long it is. "No magic numbers" still covers numeric literals
 - **Lands in:** catalog.md → Code style; guz-audit heuristic: a private method or top-level function whose body is
   a single return of one expression
 - **Status:** open
