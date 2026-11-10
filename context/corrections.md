@@ -204,19 +204,21 @@ repo. They reach it only through this file, reviewed here.
   other helpers of the same class (`toEvent`, `parserOf`) were already private methods
 - **Artem wants:** those functions as private methods of the class
 - **Rule:** a helper that only one class calls is a private method of that class, not a top-level function in its
-  file; a function shared beyond the class goes to `helpers/`. A one-line expression used once is not extracted at
-  all: it stays at its call site, in a named const when it needs a name (see the next entry)
+  file; a function shared beyond the class goes to `helpers/`. A one-line expression is not extracted at all: it
+  stays at its call sites, in a named const when it needs a name (see the next entry)
 - **Lands in:** catalog.md → Code style; guz-audit heuristic: a non-exported top-level `function` in a file that
   declares a class
 - **Status:** open
 
-## 2026-11-10 — A one-line check used once stays inline
+## 2026-11-10 — A one-line expression stays inline
 
 - **Seen:** analyzer 2026-11-10 (src/lockouts/lockouts.service.ts `private counts(action, status)`)
+- **Seen:** analyzer 2026-11-10 (src/reports/reports.repository.ts top-level `monthKey`, `nextMonth` used once and
+  `likePattern` used twice: Artem wanted all three inlined, so a one-liner used in two places stays inline too)
 - **Claude wrote:** a private method whose body is one boolean expression, called from a single place in `settle`
 - **Artem wants:** no private method for it
-- **Rule:** a one-line expression used in one place is written at that place, in a named const if the name helps;
-  a private method or helper is for logic that is longer or called more than once
-- **Lands in:** catalog.md → Code style; guz-audit heuristic: a private method with a single-statement body and
-  exactly one call site
+- **Rule:** a one-line expression is written where it is used, in a named const if the name helps, even when two
+  call sites repeat it; a private method or helper is for logic longer than one line
+- **Lands in:** catalog.md → Code style; guz-audit heuristic: a private method or top-level function whose body is
+  a single return of one expression
 - **Status:** open
