@@ -215,10 +215,13 @@ repo. They reach it only through this file, reviewed here.
 - **Seen:** analyzer 2026-11-10 (src/lockouts/lockouts.service.ts `private counts(action, status)`)
 - **Seen:** analyzer 2026-11-10 (src/reports/reports.repository.ts top-level `monthKey`, `nextMonth` used once and
   `likePattern` used twice: Artem wanted all three inlined, so a one-liner used in two places stays inline too)
+- **Seen:** analyzer 2026-11-10 (src/trader-vaults/trader-vaults.service.ts `const SYSTEM_ACTOR = null`, used in
+  two places: no constant for a value used in only two places)
 - **Claude wrote:** a private method whose body is one boolean expression, called from a single place in `settle`
 - **Artem wants:** no private method for it
-- **Rule:** a one-line expression is written where it is used, in a named const if the name helps, even when two
-  call sites repeat it; a private method or helper is for logic longer than one line
+- **Rule:** a one-line expression or a plain value is written where it is used, even when two call sites repeat it;
+  no private method, helper or module-level constant just to name it. A named const inside the function is fine when
+  the name helps. Extraction is for logic longer than one line. "No magic numbers" still covers numeric literals
 - **Lands in:** catalog.md → Code style; guz-audit heuristic: a private method or top-level function whose body is
   a single return of one expression
 - **Status:** open
