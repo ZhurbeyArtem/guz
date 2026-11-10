@@ -225,3 +225,16 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style; guz-audit heuristic: a private method or top-level function whose body is
   a single return of one expression
 - **Status:** open
+
+## 2026-11-10 — Security settings come from the environment
+
+- **Seen:** analyzer 2026-11-10 (src/users/helpers/password.ts `const BCRYPT_ROUNDS = 10`,
+  `const UNKNOWN_USER_HASH = '$2b$10$…'`)
+- **Claude wrote:** the bcrypt cost and the dummy hash for unknown emails as constants in the helper
+- **Artem wants:** both in the `.env`
+- **Rule:** a security setting an operator may tune (hash cost, the dummy hash that hides unknown accounts) is read
+  from the environment through the config loader, which validates it (here: the hash's cost must equal the rounds),
+  never a constant in code
+- **Lands in:** catalog.md → Twelve-factor config; guz-audit heuristic: a module-level constant named `*_ROUNDS`,
+  `*_COST` or holding a `$2[aby]$` hash
+- **Status:** open
