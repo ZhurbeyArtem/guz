@@ -17,6 +17,11 @@
       "type": "boolean",
       "title": "Wait for your review before each commit",
       "description": "When on, Claude stops after each finished module, asks you to review the code, and commits only after you say so. When off, Claude commits on its own as before."
+    },
+    "ste_writing": {
+      "type": "boolean",
+      "title": "Write to you in adapted ASD-STE100",
+      "description": "When on, Claude writes its explanations, reports, and questions to you in adapted ASD-STE100 (Simplified Technical English): short sentences, one idea each, active voice, one term per concept, the result first. Code, commit messages, and docs keep the project's style. When off, nothing changes."
     }
   }
 }
