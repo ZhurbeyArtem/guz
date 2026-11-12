@@ -1,5 +1,5 @@
 {
-  "description": "Adds the review gate to Claude's context when review_before_commit is on.",
+  "description": "Adds the review gate and the writing rules to Claude's context when their options are on.",
   "hooks": {
     "SessionStart": [
       {
@@ -7,6 +7,10 @@
           {
             "type": "command",
             "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/review-gate.sh\""
+          },
+          {
+            "type": "command",
+            "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/ste-writing.sh\""
           }
         ]
       }

@@ -18,14 +18,24 @@ Or from a local checkout, for development:
 /plugin install guz@guz
 ```
 
-Install asks one question, **Wait for your review before each commit** (`review_before_commit`):
+Install asks two questions. The first is **Wait for your review before each commit** (`review_before_commit`):
 
 - **On:** Claude stops after each finished module, runs the checks, and asks you to review the code. It commits
   only after you say so, then moves on to the next module. Subagent work waits for the same review.
 - **Off**, or left unanswered: nothing changes, and Claude commits on its own as before.
 
-A `SessionStart` hook (`hooks/review-gate.sh`) adds the rule to every session, including after `/clear` and
-compaction. To change the answer later, run `/plugin configure guz@guz`, then start a new session.
+The second is **Write to you in adapted ASD-STE100** (`ste_writing`):
+
+- **On:** Claude writes its explanations, reports, and questions to you in adapted ASD-STE100 (Simplified
+  Technical English): short sentences with one idea each, active voice, one term per concept, and the result
+  first. English follows the standard at about 80%, without its word dictionary. Ukrainian, and any other
+  language as far as its grammar allows, gets an adapted set of the same rules. Code, commit messages, and
+  docs keep the project's style.
+- **Off**, or left unanswered: nothing changes.
+
+Two `SessionStart` hooks (`hooks/review-gate.sh`, `hooks/ste-writing.sh`) add the rules to every session,
+including after `/clear` and compaction. To change an answer later, run `/plugin configure guz@guz`, then start
+a new session.
 
 ## Skills
 
