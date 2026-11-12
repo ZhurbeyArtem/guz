@@ -254,3 +254,15 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → input validation / API design; guz-audit heuristic: a condition of the form
   `a && !b?.length && !c?.length` choosing between alternative selectors
 - **Status:** open
+
+## 2026-11-12 — A table stores only what something reads
+
+- **Seen:** vakotrade 2026-11-12 (src/database/migrations/20261112120000_market_sentiment_snapshots.ts, uncommitted)
+- **Claude wrote:** a nullable `sentiment` column next to `value`, filled with CoinGecko's label on hourly rows and
+  null on daily ones, although no query read it and the label follows from the value's band
+- **Artem wants:** no `sentiment` column; the table keeps `periodicity`, `ts` and `value`
+- **Rule:** a new table persists only the columns some reader uses; a value derivable from another column (a label
+  from its score) or kept "in case" is left out until a reader needs it
+- **Lands in:** catalog.md → Code style (YAGNI in schemas); guz-audit heuristic: a column a migration adds that no
+  query in the module selects or filters on
+- **Status:** open
