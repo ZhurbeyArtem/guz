@@ -241,3 +241,16 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Twelve-factor config; guz-audit heuristic: a module-level constant named `*_ROUNDS`,
   `*_COST` or holding a `$2[aby]$` hash
 - **Status:** open
+
+## 2026-11-12 — Mutually exclusive inputs are rejected, not silently ranked
+
+- **Seen:** margin_trading_service 2026-11-12 (src/margin-positions/margin-positions.resolver.ts
+  `userBalanceDetails`, d43fcd57c)
+- **Claude wrote:** a branch condition that let `account_ids` silently win over a single `user_id` target
+  (`user_id && !args.users_ids?.length && !args.account_ids?.length`)
+- **Artem wants:** a request aims at one account or at many; sending both makes no sense, so it is an error
+- **Rule:** when two inputs select the same thing in different ways (one target vs a list), receiving both throws a
+  dedicated error instead of the code quietly preferring one; legacy inputs already in use keep their old behaviour
+- **Lands in:** catalog.md → input validation / API design; guz-audit heuristic: a condition of the form
+  `a && !b?.length && !c?.length` choosing between alternative selectors
+- **Status:** open
