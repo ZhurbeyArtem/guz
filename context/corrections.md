@@ -266,3 +266,17 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style (YAGNI in schemas); guz-audit heuristic: a column a migration adds that no
   query in the module selects or filters on
 - **Status:** open
+
+## 2026-11-13 — A failed create request to another service is not rolled back to a retryable state
+
+- **Seen:** vakotrade 2026-11-13 (src/payments/processors/withdrawal-crypto-psp-request.job-processor.ts, PR #7962)
+- **Claude wrote:** after claiming a withdrawal (`processing`), a `catch` around `createCryptoWithdrawalRequest`
+  that set the payment back to `new` so the job could send it again
+- **Artem wants:** no code path that can ask the routing service to create the same payment twice; the request
+  may have landed even when the call threw
+- **Rule:** when a call asks another service to create something (a payment, a transfer) and it fails, record the
+  failure and leave the record in a state the sender won't pick up again; a person resolves it, never an automatic
+  re-send from a rolled-back state
+- **Lands in:** catalog.md → error handling / idempotency; guz-audit heuristic: a `catch` around an outbound
+  create/send call that resets a status the same job selects on
+- **Status:** open
