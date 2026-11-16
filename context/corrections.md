@@ -280,3 +280,18 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → error handling / idempotency; guz-audit heuristic: a `catch` around an outbound
   create/send call that resets a status the same job selects on
 - **Status:** open
+
+## 2026-11-16 — New files join the module's per-kind folders, not a feature subfolder
+
+- **Seen:** vakotrade 2026-11-16 (src/kyt/history/: `kyt-history.enums.ts`, `payment-kyt-history.args.ts`,
+  `payment-kyt-history.model.ts`, `kyt-decision.helper.ts`, `kyt-history.service.ts`)
+- **Claude wrote:** a new feature subfolder `src/kyt/history/` that held the feature's enums (two in one file), args,
+  model, helper and service together
+- **Artem wants:** enums, args, helpers and the model in the module's existing folders, as the elliptic and sumsub
+  files already are; the service goes straight into `src/kyt`
+- **Rule:** when a module already sorts files by kind (`enums/`, `args/`, `models/`, `helpers/`), a new feature puts
+  each file in the folder for its kind (one enum per `*.enum.ts`) and its service at the module root, instead of
+  grouping the feature in a subfolder of its own; specs mirror the same paths under `tests/`
+- **Lands in:** catalog.md → Code style (folder layout); guz-audit heuristic: a new subfolder under a module that
+  already has `enums/`, `args/` or `models/` and holds files of those kinds
+- **Status:** open
