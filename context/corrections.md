@@ -51,6 +51,7 @@ repo. They reach it only through this file, reviewed here.
 ## 2026-11-05 — Await into a named const before using the result
 
 - **Seen:** analyzer 2026-11-05 (e36af66)
+  vakotrade 2026-11-16 (deposit/withdrawal-auto-approve `Object.assign(payment, await ...)`; Claude flagged it, Artem confirmed)
 - **Claude wrote:** `for (const row of await this.repository.findByExternalRefs(...)) { ... }`, and the same habit as
   `(await f()).x`, `list.push(await f())` and `g(await f())`
 - **Artem wants:** first a const that fetches the data, then the code that uses it
