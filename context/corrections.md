@@ -296,3 +296,15 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → Code style (folder layout); guz-audit heuristic: a new subfolder under a module that
   already has `enums/`, `args/` or `models/` and holds files of those kinds
 - **Status:** open
+
+## 2026-11-16 — A detail panel adds facts to its existing blocks, not a new table per fact
+
+- **Seen:** back_office_v4 2026-11-16 (src/ui/views/trade/kyt-page/KytInfo.tsx, uncommitted)
+- **Claude wrote:** a separate "Latest provider results" section with its own one-row data grid between the KYT
+  decision and Screening blocks
+- **Artem wants:** no extra table; the provider result goes in as the last card of the existing Screening block
+- **Rule:** in a row-details modal, a new fact about something a block already describes becomes another card in that
+  block; a new section or embedded grid is only for a list that can grow (history), never for one value per provider
+- **Lands in:** catalog.md → UI conventions (row details); guz-audit heuristic: an embedded `Table` in a details
+  component whose data is at most one row per enum value
+- **Status:** open
