@@ -308,3 +308,15 @@ repo. They reach it only through this file, reviewed here.
 - **Lands in:** catalog.md → UI conventions (row details); guz-audit heuristic: an embedded `Table` in a details
   component whose data is at most one row per enum value
 - **Status:** open
+
+## 2026-11-17 — Do what the task's latest ask is, not everything its description lists
+
+- **Seen:** vakotrade 2026-11-17 (Asana 1220559966329332, branch feat/spot-market-data, process)
+- **Claude wrote:** read "do what the task asks" as the whole backend spec in the description and implemented
+  `instrument_trades` (query and subscription) and `market_overview`, although the latest comment only assigned
+  Artem to check whether CoinGecko provides those fields
+- **Artem wants:** the task asked only for the check, not the implementation
+- **Rule:** a ticket's latest comment that assigns a narrower action (check, estimate, investigate) sets the scope;
+  deliver that answer first, and build the described feature only after Artem says to
+- **Lands in:** a skill text (process rules for working from a ticket); not a catalog.md code-style entry
+- **Status:** open
