@@ -319,4 +319,4 @@ repo. They reach it only through this file, reviewed here.
 - **Rule:** a ticket's latest comment that assigns a narrower action (check, estimate, investigate) sets the scope;
   deliver that answer first, and build the described feature only after Artem says to
 - **Lands in:** a skill text (process rules for working from a ticket); not a catalog.md code-style entry
-- **Status:** open
+- **Status:** promoted (831327e, guz feat/wtf-skill: `/guz:wtf` leads its summary with the task's current ask)
