@@ -37,6 +37,11 @@ Modules are detected exactly as `guz-init` detects them:
   module-marker file. In NestJS that file is `*.module.ts`; in another stack it is
   whatever plays the same role — translate the intent, not the filename.
 
+A frontend has no marker file. When `target` in `.guz.yaml` is `frontend`, a nested
+module is every directory directly under a feature container: `features/`, `entities/`,
+`widgets/`, `pages/`, `views/`. When it is `fullstack`, both rules apply. A contract
+without `target` predates the field and is `backend`.
+
 A module's name is its path from `src/`: `referrals`, `referrals/rewards`,
 `referrals/rewards/operations`. Bare directory names are not usable — one repo here has
 twelve modules called `operations`.
@@ -163,7 +168,7 @@ nobody re-audited. Same rule as the matrix: unmeasured is inherited, not dropped
 Write `score` for every module, pattern and style rule, plus `overall`. Show the diff
 before writing.
 
-Touch nothing else. `priority`, `thresholds`, `stack`, `repo` and every comment stay
+Touch nothing else. `priority`, `thresholds`, `stack`, `target`, `repo` and every comment stay
 exactly as they are — the only structural change allowed is the module add/remove agreed
 in step 2.
 

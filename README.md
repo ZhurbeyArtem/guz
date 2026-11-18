@@ -41,22 +41,31 @@ a new session.
 
 ### `/guz:guz-init`
 
-Creates `.guz.yaml`. Detects the repo name, stack and modules, then asks which
-architecture patterns and code-style rules apply — pick from the catalog, write your
-own, or both — and sorts them into priority buckets.
+Creates `.guz.yaml`. Detects the repo name and stack, asks whether the repo is
+backend, frontend or fullstack, detects modules, then asks which architecture patterns
+and code-style rules apply — pick from the catalog, write your own, or both — and sorts
+them into priority buckets.
+
+The answer is stored as `target` and decides which catalog sections you see. Every repo
+gets the shared entries; a backend adds Clean Architecture, CQRS, Outbox and the rest; a
+frontend adds Feature-Sliced Design, Bulletproof React, Atomic Design, server state apart
+from client state, Rules of Hooks, stable list keys, design tokens and the rest; a
+fullstack repo gets both.
 
 Refuses to run if `.guz.yaml` already exists. Offers to add an `@.guz.yaml` line to the
 repo's `CLAUDE.md`, which is what makes the contract load into every session.
 
 A module is a top-level directory under `src/`, plus any directory nested below one that
-holds the stack's module-marker file — `*.module.ts` in NestJS. Nested modules are named
-by path, and a parent's perimeter stops where a nested module begins, so no file is
-counted twice.
+holds the stack's module-marker file — `*.module.ts` in NestJS. A frontend has no marker
+file, so there every directory directly under `features/`, `entities/`, `widgets/`,
+`pages/` or `views/` is a module. Nested modules are named by path, and a parent's
+perimeter stops where a nested module begins, so no file is counted twice.
 
 ```yaml
 # .guz.yaml — architecture & style contract for this repo. Checked in.
 repo: example-service
 stack: [typescript, nestjs, postgres, redis]
+target: backend
 thresholds: { green: 8, yellow: 5 }
 overall: null
 modules:

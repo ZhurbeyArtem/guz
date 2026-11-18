@@ -51,6 +51,7 @@ repo. They reach it only through this file, reviewed here.
 ## 2026-11-05 — Await into a named const before using the result
 
 - **Seen:** analyzer 2026-11-05 (e36af66)
+  vakotrade 2026-11-16 (deposit/withdrawal-auto-approve `Object.assign(payment, await ...)`; Claude flagged it, Artem confirmed)
 - **Claude wrote:** `for (const row of await this.repository.findByExternalRefs(...)) { ... }`, and the same habit as
   `(await f()).x`, `list.push(await f())` and `g(await f())`
 - **Artem wants:** first a const that fetches the data, then the code that uses it
@@ -253,4 +254,69 @@ repo. They reach it only through this file, reviewed here.
   dedicated error instead of the code quietly preferring one; legacy inputs already in use keep their old behaviour
 - **Lands in:** catalog.md → input validation / API design; guz-audit heuristic: a condition of the form
   `a && !b?.length && !c?.length` choosing between alternative selectors
+- **Status:** open
+
+## 2026-11-12 — A table stores only what something reads
+
+- **Seen:** vakotrade 2026-11-12 (src/database/migrations/20261112120000_market_sentiment_snapshots.ts, uncommitted)
+- **Claude wrote:** a nullable `sentiment` column next to `value`, filled with CoinGecko's label on hourly rows and
+  null on daily ones, although no query read it and the label follows from the value's band
+- **Artem wants:** no `sentiment` column; the table keeps `periodicity`, `ts` and `value`
+- **Rule:** a new table persists only the columns some reader uses; a value derivable from another column (a label
+  from its score) or kept "in case" is left out until a reader needs it
+- **Lands in:** catalog.md → Code style (YAGNI in schemas); guz-audit heuristic: a column a migration adds that no
+  query in the module selects or filters on
+- **Status:** open
+
+## 2026-11-13 — A failed create request to another service is not rolled back to a retryable state
+
+- **Seen:** vakotrade 2026-11-13 (src/payments/processors/withdrawal-crypto-psp-request.job-processor.ts, PR #7962)
+- **Claude wrote:** after claiming a withdrawal (`processing`), a `catch` around `createCryptoWithdrawalRequest`
+  that set the payment back to `new` so the job could send it again
+- **Artem wants:** no code path that can ask the routing service to create the same payment twice; the request
+  may have landed even when the call threw
+- **Rule:** when a call asks another service to create something (a payment, a transfer) and it fails, record the
+  failure and leave the record in a state the sender won't pick up again; a person resolves it, never an automatic
+  re-send from a rolled-back state
+- **Lands in:** catalog.md → error handling / idempotency; guz-audit heuristic: a `catch` around an outbound
+  create/send call that resets a status the same job selects on
+- **Status:** open
+
+## 2026-11-16 — New files join the module's per-kind folders, not a feature subfolder
+
+- **Seen:** vakotrade 2026-11-16 (src/kyt/history/: `kyt-history.enums.ts`, `payment-kyt-history.args.ts`,
+  `payment-kyt-history.model.ts`, `kyt-decision.helper.ts`, `kyt-history.service.ts`)
+- **Claude wrote:** a new feature subfolder `src/kyt/history/` that held the feature's enums (two in one file), args,
+  model, helper and service together
+- **Artem wants:** enums, args, helpers and the model in the module's existing folders, as the elliptic and sumsub
+  files already are; the service goes straight into `src/kyt`
+- **Rule:** when a module already sorts files by kind (`enums/`, `args/`, `models/`, `helpers/`), a new feature puts
+  each file in the folder for its kind (one enum per `*.enum.ts`) and its service at the module root, instead of
+  grouping the feature in a subfolder of its own; specs mirror the same paths under `tests/`
+- **Lands in:** catalog.md → Code style (folder layout); guz-audit heuristic: a new subfolder under a module that
+  already has `enums/`, `args/` or `models/` and holds files of those kinds
+- **Status:** open
+
+## 2026-11-16 — A detail panel adds facts to its existing blocks, not a new table per fact
+
+- **Seen:** back_office_v4 2026-11-16 (src/ui/views/trade/kyt-page/KytInfo.tsx, uncommitted)
+- **Claude wrote:** a separate "Latest provider results" section with its own one-row data grid between the KYT
+  decision and Screening blocks
+- **Artem wants:** no extra table; the provider result goes in as the last card of the existing Screening block
+- **Rule:** in a row-details modal, a new fact about something a block already describes becomes another card in that
+  block; a new section or embedded grid is only for a list that can grow (history), never for one value per provider
+- **Lands in:** catalog.md → UI conventions (row details); guz-audit heuristic: an embedded `Table` in a details
+  component whose data is at most one row per enum value
+- **Status:** open
+
+## 2026-11-17 — Do what the task's latest ask is, not everything its description lists
+
+- **Seen:** vakotrade 2026-11-17 (Asana 1220559966329332, branch feat/spot-market-data, process)
+- **Claude wrote:** read "do what the task asks" as the whole backend spec in the description and implemented
+  `instrument_trades` (query and subscription) and `market_overview`, although the latest comment only assigned
+  Artem to check whether CoinGecko provides those fields
+- **Artem wants:** the task asked only for the check, not the implementation
+- **Rule:** a ticket's latest comment that assigns a narrower action (check, estimate, investigate) sets the scope;
+  deliver that answer first, and build the described feature only after Artem says to
+- **Lands in:** a skill text (process rules for working from a ticket); not a catalog.md code-style entry
 - **Status:** open
