@@ -145,6 +145,16 @@ surprising, and a real trade-off. User-invoked only — it writes to the repo.
 Both are copied from [mattpocock/skills](https://github.com/mattpocock/skills) under MIT.
 See [LICENSES.md](LICENSES.md).
 
+### `/guz:wtf`
+
+Summarizes an Asana task in one to four sentences. Reads the title, the description, the comments, and every
+Slack thread or Asana task they link to, one level deep. Leads with what the task asks now and writes in adapted
+ASD-STE100, whether or not `ste_writing` is on. Needs the Asana MCP, and the Slack MCP for Slack threads.
+
+```
+/guz:wtf https://app.asana.com/1/<workspace>/task/<task>
+```
+
 ## Two numbers, not one
 
 `priority` is declared — how much this repo cares. `score` is measured — how well the
