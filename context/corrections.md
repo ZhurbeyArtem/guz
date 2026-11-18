@@ -39,7 +39,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-05 — Specs live in a tests/ folder inside their module
 
-- **Seen:** analyzer 2026-11-05 (3cc2dcf)
+- **Seen:** insights-service 2026-11-05 (3cc2dcf)
 - **Claude wrote:** each spec beside the file it tests (`src/replay/replay.service.spec.ts`), helper specs inside
   `helpers/`, e2e specs in the root `test/` folder
 - **Artem wants:** every test of a module in a separate `tests/` folder inside that module
@@ -50,8 +50,8 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-05 — Await into a named const before using the result
 
-- **Seen:** analyzer 2026-11-05 (e36af66)
-  vakotrade 2026-11-16 (deposit/withdrawal-auto-approve `Object.assign(payment, await ...)`; Claude flagged it, Artem confirmed)
+- **Seen:** insights-service 2026-11-05 (e36af66)
+  core-api 2026-11-16 (deposit/withdrawal-auto-approve `Object.assign(payment, await ...)`; Claude flagged it, Artem confirmed)
 - **Claude wrote:** `for (const row of await this.repository.findByExternalRefs(...)) { ... }`, and the same habit as
   `(await f()).x`, `list.push(await f())` and `g(await f())`
 - **Artem wants:** first a const that fetches the data, then the code that uses it
@@ -63,7 +63,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-05 — Blank line before and after every if and for
 
-- **Seen:** analyzer 2026-11-05 (828035b)
+- **Seen:** insights-service 2026-11-05 (828035b)
 - **Claude wrote:** `if` and `for` blocks glued to the statements around them
 - **Artem wants:** one empty line before and after every `if` and `for`, so the code reads easier
 - **Rule:** one blank line around each `if` and `for` statement, except where it opens or closes its block
@@ -73,7 +73,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-05 — try/catch in every repository method
 
-- **Seen:** analyzer 2026-11-05 (a510f56)
+- **Seen:** insights-service 2026-11-05 (a510f56)
 - **Claude wrote:** repository methods with no try/catch, so a driver error reached the global filter as a bare
   INTERNAL; only the few methods mapping a duplicate or a missing parent had one
 - **Artem wants:** a try/catch on every repository method that queries the database
@@ -87,7 +87,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-05 — async on every method that returns a Promise
 
-- **Seen:** analyzer 2026-11-05 (6eb16d9)
+- **Seen:** insights-service 2026-11-05 (6eb16d9)
 - **Claude wrote:** `create(input): Promise<SourceRow> { if (blank) throw ...; return this.repository.insert(input); }`
   without `async`, so the validation error was thrown synchronously instead of rejecting; tests missed it because
   their `errorOf` helper caught both
@@ -100,8 +100,8 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-05 — A loop iterates a named const; no multi-line callback inside an argument list
 
-- **Seen:** analyzer 2026-11-05 (5099722)
-- **Seen:** analyzer 2026-11-05 (d51982d): the same rule applied to calls in a loop header, which the first pass missed
+- **Seen:** insights-service 2026-11-05 (5099722)
+- **Seen:** insights-service 2026-11-05 (d51982d): the same rule applied to calls in a loop header, which the first pass missed
 - **Claude wrote:** `for await (const page of this.pages(options, (after) => { ...25 lines building a query... })) {`
 - **Artem wants:** no arrow function inside the arguments; first get the pages, then walk them
 - **Rule:** the call that produces what a loop walks goes into a const above the loop; a callback longer than one
@@ -113,7 +113,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-05 — Split independent work across parallel subagents, each in its own worktree
 
-- **Seen:** analyzer 2026-11-05 (process, no commit)
+- **Seen:** insights-service 2026-11-05 (process, no commit)
 - **Claude wrote:** Phase 3 work done inline in the main session, one piece at a time, with no superpowers skills loaded and no UI design skill for UI work
 - **Artem wants:** use superpowers and ui-ux-pro-max where they fit, and do the work through subagents; when five agents can safely run at once, run five, and run more or fewer when that is the safe number
 - **Rule:** split work into genuinely independent parts and dispatch them to subagents in parallel, each in its own git worktree with its own test database; load the relevant superpowers skills (test-driven-development, verification-before-completion, dispatching-parallel-agents) and ui-ux-pro-max for UI design; the main session coordinates, reviews and integrates
@@ -122,7 +122,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-06 — Check a nullable object with `!x`, not `x === undefined`
 
-- **Seen:** analyzer 2026-11-06 (src/auth/auth.decorators.ts, `if (user === undefined)`)
+- **Seen:** insights-service 2026-11-06 (src/auth/auth.decorators.ts, `if (user === undefined)`)
 - **Claude wrote:** explicit comparisons such as `if (user === undefined)` and `if (row === null)` on values that
   can only be an object or nothing
 - **Artem wants:** the shorter `if (!user)`
@@ -135,7 +135,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-06 — Every exported interface lives in interface/, one file each
 
-- **Seen:** analyzer 2026-11-06 (src/cli/helpers/prompter.ts `Prompter`, src/cli/create-admin.ts `CreateAdminIo`)
+- **Seen:** insights-service 2026-11-06 (src/cli/helpers/prompter.ts `Prompter`, src/cli/create-admin.ts `CreateAdminIo`)
 - **Claude wrote:** exported interfaces declared beside the code that uses them (helpers, controllers, repositories,
   CLI scripts), and several related interfaces sharing one file in `interface/`
 - **Artem wants:** an interface that a file exports goes into the module's `interface/` folder, in a file of its own
@@ -149,7 +149,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-06 — A file holds one kind of thing: module, functions and interfaces apart
 
-- **Seen:** analyzer 2026-11-06 (src/cli/create-admin.ts: `CreateAdminModule`, `CreateAdminIo`, `runCreateAdmin` and
+- **Seen:** insights-service 2026-11-06 (src/cli/create-admin.ts: `CreateAdminModule`, `CreateAdminIo`, `runCreateAdmin` and
   `main` in one file)
 - **Claude wrote:** CLI scripts that declare a Nest module, an exported interface, the exported work function and
   `main` side by side in one file
@@ -163,7 +163,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-09 — Raw SQL used once stays inline, not in a constant
 
-- **Seen:** analyzer 2026-11-09 (src/exceptions/exceptions.repository.ts `const UNION = \`…\``)
+- **Seen:** insights-service 2026-11-09 (src/exceptions/exceptions.repository.ts `const UNION = \`…\``)
 - **Claude wrote:** a module-level `const UNION` holding a multi-line SQL union, referenced from a single
   `db.raw(\`(${UNION}) AS u\`)` call
 - **Artem wants:** no constant for SQL that is used once; write it inline at the call site
@@ -175,7 +175,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-09 — A finished module waits for Artem's review before it is committed
 
-- **Seen:** analyzer 2026-11-09 (process; replaces "commit on your own" for module work)
+- **Seen:** insights-service 2026-11-09 (process; replaces "commit on your own" for module work)
 - **Claude wrote:** committed each module as soon as its checks passed, then moved on to the next one
 - **Artem wants:** after a module is written, leave it uncommitted and ask him to review the code. Commit only once
   he says it can be committed, and only then go on to the next module
@@ -187,12 +187,12 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-09 — HTTP calls go through axios, not fetch
 
-- **Seen:** analyzer 2026-11-09 (src/vakotrade-ledger/vakotrade-ledger.client.ts, src/fireblocks/fireblocks.client.ts,
+- **Seen:** insights-service 2026-11-09 (src/core-api-ledger/core-api-ledger.client.ts, src/fireblocks/fireblocks.client.ts,
   src/common/metrics/metrics.client.ts, src/auth/turnstile.verifier.ts)
 - **Claude wrote:** outbound HTTP with the global `fetch`, `AbortSignal.timeout` and `response.json()`, and specs that
   mock it with `jest.spyOn(global, 'fetch')`
 - **Artem wants:** axios instead of fetch
-- **Rule:** backend HTTP clients call axios (the version `margin_trading_service` uses), with `timeout` instead of an
+- **Rule:** backend HTTP clients call axios (the version `positions-service` uses), with `timeout` instead of an
   abort signal; specs mock axios rather than `global.fetch`. The web keeps RTK Query's base query unless asked
 - **Lands in:** catalog.md → Code style; guz-audit heuristic: a `fetch(` call or `jest.spyOn(global, 'fetch')` in a
   NestJS repo
@@ -200,7 +200,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-10 — A class's helpers are its private methods
 
-- **Seen:** analyzer 2026-11-10 (src/imports/imports.service.ts `walletOf`, `withoutUnmappedTrades`)
+- **Seen:** insights-service 2026-11-10 (src/imports/imports.service.ts `walletOf`, `withoutUnmappedTrades`)
 - **Claude wrote:** non-exported module-level functions below `ImportsService`, called only from the class, while
   other helpers of the same class (`toEvent`, `parserOf`) were already private methods
 - **Artem wants:** those functions as private methods of the class
@@ -213,12 +213,12 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-10 — A one-line expression stays inline
 
-- **Seen:** analyzer 2026-11-10 (src/lockouts/lockouts.service.ts `private counts(action, status)`)
-- **Seen:** analyzer 2026-11-10 (src/reports/reports.repository.ts top-level `monthKey`, `nextMonth` used once and
+- **Seen:** insights-service 2026-11-10 (src/lockouts/lockouts.service.ts `private counts(action, status)`)
+- **Seen:** insights-service 2026-11-10 (src/reports/reports.repository.ts top-level `monthKey`, `nextMonth` used once and
   `likePattern` used twice: Artem wanted all three inlined, so a one-liner used in two places stays inline too)
-- **Seen:** analyzer 2026-11-10 (src/trader-vaults/trader-vaults.service.ts `const SYSTEM_ACTOR = null`, used in
+- **Seen:** insights-service 2026-11-10 (src/trader-vaults/trader-vaults.service.ts `const SYSTEM_ACTOR = null`, used in
   two places: no constant for a value used in only two places)
-- **Seen:** analyzer 2026-11-10 (src/vakotrade-ledger/vakotrade-ledger.client.ts `SIGN_IN`, `ACCOUNT_TRANSACTIONS`,
+- **Seen:** insights-service 2026-11-10 (src/core-api-ledger/core-api-ledger.client.ts `SIGN_IN`, `ACCOUNT_TRANSACTIONS`,
   `DEPOSIT_ADDRESSES`: multi-line GraphQL documents, each used once, go inline at the call too, as raw SQL does)
 - **Claude wrote:** a private method whose body is one boolean expression, called from a single place in `settle`
 - **Artem wants:** no private method for it
@@ -232,7 +232,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-10 — Security settings come from the environment
 
-- **Seen:** analyzer 2026-11-10 (src/users/helpers/password.ts `const BCRYPT_ROUNDS = 10`,
+- **Seen:** insights-service 2026-11-10 (src/users/helpers/password.ts `const BCRYPT_ROUNDS = 10`,
   `const UNKNOWN_USER_HASH = '$2b$10$…'`)
 - **Claude wrote:** the bcrypt cost and the dummy hash for unknown emails as constants in the helper
 - **Artem wants:** both in the `.env`
@@ -245,7 +245,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-12 — Mutually exclusive inputs are rejected, not silently ranked
 
-- **Seen:** margin_trading_service 2026-11-12 (src/margin-positions/margin-positions.resolver.ts
+- **Seen:** positions-service 2026-11-12 (src/margin-positions/margin-positions.resolver.ts
   `userBalanceDetails`, d43fcd57c)
 - **Claude wrote:** a branch condition that let `account_ids` silently win over a single `user_id` target
   (`user_id && !args.users_ids?.length && !args.account_ids?.length`)
@@ -258,7 +258,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-12 — A table stores only what something reads
 
-- **Seen:** vakotrade 2026-11-12 (src/database/migrations/20261112120000_market_sentiment_snapshots.ts, uncommitted)
+- **Seen:** core-api 2026-11-12 (src/database/migrations/20261112120000_market_sentiment_snapshots.ts, uncommitted)
 - **Claude wrote:** a nullable `sentiment` column next to `value`, filled with CoinGecko's label on hourly rows and
   null on daily ones, although no query read it and the label follows from the value's band
 - **Artem wants:** no `sentiment` column; the table keeps `periodicity`, `ts` and `value`
@@ -270,7 +270,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-13 — A failed create request to another service is not rolled back to a retryable state
 
-- **Seen:** vakotrade 2026-11-13 (src/payments/processors/withdrawal-crypto-psp-request.job-processor.ts, PR #7962)
+- **Seen:** core-api 2026-11-13 (src/payments/processors/withdrawal-crypto-psp-request.job-processor.ts, PR #7962)
 - **Claude wrote:** after claiming a withdrawal (`processing`), a `catch` around `createCryptoWithdrawalRequest`
   that set the payment back to `new` so the job could send it again
 - **Artem wants:** no code path that can ask the routing service to create the same payment twice; the request
@@ -284,7 +284,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-16 — New files join the module's per-kind folders, not a feature subfolder
 
-- **Seen:** vakotrade 2026-11-16 (src/kyt/history/: `kyt-history.enums.ts`, `payment-kyt-history.args.ts`,
+- **Seen:** core-api 2026-11-16 (src/kyt/history/: `kyt-history.enums.ts`, `payment-kyt-history.args.ts`,
   `payment-kyt-history.model.ts`, `kyt-decision.helper.ts`, `kyt-history.service.ts`)
 - **Claude wrote:** a new feature subfolder `src/kyt/history/` that held the feature's enums (two in one file), args,
   model, helper and service together
@@ -299,7 +299,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-16 — A detail panel adds facts to its existing blocks, not a new table per fact
 
-- **Seen:** back_office_v4 2026-11-16 (src/ui/views/trade/kyt-page/KytInfo.tsx, uncommitted)
+- **Seen:** admin-panel 2026-11-16 (src/ui/views/trade/kyt-page/KytInfo.tsx, uncommitted)
 - **Claude wrote:** a separate "Latest provider results" section with its own one-row data grid between the KYT
   decision and Screening blocks
 - **Artem wants:** no extra table; the provider result goes in as the last card of the existing Screening block
@@ -311,7 +311,7 @@ repo. They reach it only through this file, reviewed here.
 
 ## 2026-11-17 — Do what the task's latest ask is, not everything its description lists
 
-- **Seen:** vakotrade 2026-11-17 (Asana 1220559966329332, branch feat/spot-market-data, process)
+- **Seen:** core-api 2026-11-17 (Asana 1220559966329332, branch feat/spot-market-data, process)
 - **Claude wrote:** read "do what the task asks" as the whole backend spec in the description and implemented
   `instrument_trades` (query and subscription) and `market_overview`, although the latest comment only assigned
   Artem to check whether CoinGecko provides those fields
