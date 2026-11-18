@@ -37,7 +37,8 @@ module against the others.
    hook for every rule that has one. Run it. A rule with a hook is never scored by
    impression alone.
 2. **Read what the grep found**, plus the module's entry points — its module definition,
-   controllers/resolvers, services. Enough files to know whether a hit is systemic or a
+   controllers/resolvers, services; in a frontend, its public `index`, route components
+   and hooks. Enough files to know whether a hit is systemic or a
    single bad file.
 3. **Judge** only what neither grep nor reading settled.
 

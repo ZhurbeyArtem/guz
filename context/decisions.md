@@ -138,3 +138,19 @@ Decision 47 is reversed here, in the same day it was written, by a follow-up req
 The cost, accepted: ~130 lines of someone else's text now live here and no longer track
 upstream. If the method changes in `mattpocock/skills`, nothing in this repo notices. The
 provenance lines are the only thread back.
+
+## 2026-11-18 — frontend target
+
+Settled from one request, without a grilling session. Decision 41 still holds: init and
+audit detect modules the same way, now with a second rule for frontends.
+
+| # | Decision | Why | Rejected |
+| - | -------- | --- | -------- |
+| 56 | `guz-init` asks whether the repo is backend, frontend or fullstack, always, with `AskUserQuestion`. The stack only preselects an answer. | Three options fit under the four-option cap that 10 avoided. A Next.js repo with Prisma can be either, and only the user knows which. | Inferring the answer from `stack` silently; a free-text question. |
+| 57 | The answer is stored as `target` in `.guz.yaml`; a contract without it is `backend`. | Audit re-detects modules on every run and must use the rule init used. Every contract written before this field was a backend one. | Re-deriving the answer from `stack` at audit time. |
+| 58 | The catalog splits into Shared, Backend and Frontend sections; every existing entry keeps its name. Only `API-first` and `Twelve-Factor config` move to Shared on the architecture side. | Audit and its heuristics match rules by name, so a rename strips the definition from every contract that uses it. | A target tag on each entry; one merged list; renaming `Feature-Sliced / modular monolith` to free the name for FSD. |
+| 59 | In a frontend, a nested module is every directory directly under `features/`, `entities/`, `widgets/`, `pages/` or `views/`. | A frontend has no marker file, and `index.ts` sits in every component folder. Top-level only would put all of `back_office_v4`'s `src/ui/views/*` into one `ui` module. | `index.ts` as the marker; top-level directories only. |
+| 60 | Frontend grep hooks are written for TypeScript/React, and every `--include=*.ts` also means `*.tsx` there. | Both SHIFT frontends checked are React: `back_office_v4` (React 18, MUI, Redux Toolkit) and `cbr` (Next.js 15, Tailwind). | Framework-neutral hooks, which would grep for nothing. |
+
+The 2026-11-16 correction about detail panels names a `UI conventions` catalog section.
+It stays open; it reaches the catalog only through the corrections summary.
